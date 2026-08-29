@@ -1,7 +1,8 @@
-// This is a basic Flutter widget test for the SnapHome starter screen.
+// Basic Flutter widget test for the Lumo app.
 //
-// It pumps the real app and verifies that the welcoming home screen renders
-// the expected title and placeholder content.
+// It pumps the real app and verifies that the animated splash screen renders
+// the Lumo wordmark and tagline. We use pump() (not pumpAndSettle) because the
+// splash contains looping/entrance animations that never fully settle.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,22 +10,17 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:snaphome/main.dart';
 
 void main() {
-  testWidgets('SnapHome home screen renders welcome content',
+  testWidgets('Lumo splash renders the wordmark and tagline',
       (WidgetTester tester) async {
-    // Build the real app and trigger a frame.
-    await tester.pumpWidget(const SnapHomeApp());
+    await tester.pumpWidget(const LumoApp());
 
-    // The AppBar title should read 'SnapHome'.
-    expect(find.text('SnapHome'), findsOneWidget);
+    // Let the first frames render (entrance animations begin).
+    await tester.pump(const Duration(milliseconds: 100));
 
-    // The welcoming placeholder body should render.
-    expect(find.text('Welcome to SnapHome'), findsOneWidget);
-    expect(
-      find.textContaining('AI-powered home decor companion'),
-      findsOneWidget,
-    );
+    // The Lumo wordmark should be present on the splash screen.
+    expect(find.text('Lumo'), findsOneWidget);
 
-    // The decorative icon should be present.
-    expect(find.byIcon(Icons.chair_outlined), findsOneWidget);
+    // The tagline (all-caps overline) should render.
+    expect(find.text('DESIGN THAT FEELS LIKE HOME'), findsOneWidget);
   });
 }

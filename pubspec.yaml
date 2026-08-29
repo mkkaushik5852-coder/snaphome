@@ -1,5 +1,5 @@
 name: snaphome
-description: "SnapHome - a home decor AI app."
+description: "Lumo - a premium AI interior design app."
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
 
@@ -14,6 +14,15 @@ dependencies:
 
   # The Cupertino Icons font for iOS-style icons.
   cupertino_icons: ^1.0.6
+
+  # Elegant typography (fetched at runtime; works great on web).
+  google_fonts: ^6.2.1
+
+  # Declarative micro-animations (staggered fades, slides, shimmer, etc.).
+  flutter_animate: ^4.5.0
+
+  # Cross-platform image picking (has web support).
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

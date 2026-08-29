@@ -1,74 +1,46 @@
 import 'package:flutter/material.dart';
+import 'app_state.dart';
+import 'screens/splash_screen.dart';
+import 'theme/app_theme.dart';
 
 void main() {
-  runApp(const SnapHomeApp());
+  runApp(const LumoApp());
 }
 
-/// Root widget for the SnapHome application.
-class SnapHomeApp extends StatelessWidget {
-  const SnapHomeApp({super.key});
+/// Root of the Lumo application. Owns the [AppState], exposes it via [AppScope],
+/// and rebuilds the [MaterialApp] when theme mode changes.
+class LumoApp extends StatefulWidget {
+  const LumoApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SnapHome',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        useMaterial3: true,
-      ),
-      home: const HomeScreen(),
-    );
+  State<LumoApp> createState() => _LumoAppState();
+}
+
+class _LumoAppState extends State<LumoApp> {
+  final AppState _state = AppState();
+
+  @override
+  void dispose() {
+    _state.dispose();
+    super.dispose();
   }
-}
-
-/// The starter home screen. This is a welcoming placeholder shown on the very
-/// first web deploy so there is something real to look at. Real screens,
-/// layouts, and features will replace this later.
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: theme.colorScheme.inversePrimary,
-        title: const Text('SnapHome'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.chair_outlined,
-                size: 96,
-                color: theme.colorScheme.primary,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Welcome to SnapHome',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.onSurface,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Your AI-powered home decor companion.\n'
-                'Screens and features are coming soon.',
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
-        ),
+    return AppScope(
+      state: _state,
+      child: AnimatedBuilder(
+        animation: _state,
+        builder: (context, _) {
+          return MaterialApp(
+            title: 'Lumo',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.light(),
+            darkTheme: AppTheme.dark(),
+            themeMode: _state.themeMode,
+            home: const SplashScreen(),
+          );
+        },
       ),
     );
   }
