@@ -1,11 +1,12 @@
 name: Build Debug APK
 
 # Builds an installable Android debug APK and uploads it as a downloadable
-# artifact. Runs on every push to main, and can also be started by hand from
-# the Actions tab ("Run workflow").
+# artifact.
+#
+# This build does NOT run automatically. To save CI usage/credits, it only
+# runs when YOU start it by hand: open the Actions tab, pick "Build Debug APK",
+# and tap "Run workflow". (It also does not build on every code change.)
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 permissions:
