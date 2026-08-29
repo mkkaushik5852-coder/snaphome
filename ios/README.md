@@ -23,6 +23,8 @@ text-only, SDK-less environment.
 
 Running `flutter create .` inside the `snaphome/` project on a Mac (or in CI
 with the Flutter SDK) regenerates and repairs any missing or incomplete iOS
-project files without disturbing the Dart code or the values set above. iOS
-build/signing is deferred per the project constraints, so this is expected and
-safe for now.
+project files without disturbing the Dart code or the values set above. Both
+GitHub Actions workflows already run this `flutter create .` step before their
+builds, so the missing iOS scaffolding is regenerated automatically in CI too.
+iOS build/signing is deferred per the project constraints, so no CI job builds
+iOS yet, but the regeneration keeps the project ready for when it does.

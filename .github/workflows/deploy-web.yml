@@ -31,6 +31,17 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: 3.24.5
+
+      # Some web assets (favicon.png and the PWA icons under web/icons/) are
+      # binary files and are intentionally not committed to the repo. This step
+      # uses the Flutter SDK to regenerate the missing platform scaffolding
+      # (favicon, web icons, and any other default files) before the build.
+      # Running "flutter create ." on an existing project is non-destructive:
+      # it fills in missing platform files without touching lib/, pubspec.yaml,
+      # or existing config.
+      - name: Regenerate missing platform assets
+        run: flutter create --platforms=android,ios,web --org com.snaphome --project-name snaphome .
 
       - name: Install dependencies
         run: flutter pub get

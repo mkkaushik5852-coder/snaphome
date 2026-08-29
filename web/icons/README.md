@@ -10,7 +10,12 @@ This directory holds the PWA icons referenced by `../manifest.json`:
 These are binary PNG files that ship with the standard Flutter web template
 (`flutter create`). They could not be authored as text in this environment.
 
-Running `flutter create .` inside the `snaphome/` project on any machine with
-the Flutter SDK (including CI) will regenerate the default SnapHome/Flutter web
-icons here. The app builds and renders without them; browsers simply fall back
-when an icon file is missing. Replace them later with your own branded icons.
+You do **not** need to do anything: the "Deploy Web Preview" GitHub Actions
+workflow (`.github/workflows/deploy-web.yml`) runs `flutter create .` before it
+builds, which regenerates these default web icons automatically on every CI
+run. This is why the icons are not committed to the repo and the web build
+still succeeds.
+
+If you want to work on the project locally, running `flutter create .` inside
+the `snaphome/` project on any machine with the Flutter SDK regenerates them the
+same way. Replace them later with your own branded icons.

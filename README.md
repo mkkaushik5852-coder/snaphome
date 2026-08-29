@@ -123,3 +123,10 @@ None of this is needed to preview or test the app today.
 - `.github/workflows/build-apk.yml` - the automation that builds the debug APK
   you install on your phone.
 - `README.md` - this guide.
+
+> **About the app icons and graphics:** the small binary image files (the
+> Android launcher icon, the website favicon, and the web app icons) are not
+> stored in the project. Instead, both automations regenerate the standard
+> default images automatically each time they build, so nothing is missing when
+> the web preview and APK are created. You can replace them with your own
+> branded artwork later.
