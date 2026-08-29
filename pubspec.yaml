@@ -1,0 +1,33 @@
+name: snaphome
+description: "SnapHome - a home decor AI app."
+# Prevent accidental publishing to pub.dev.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The Cupertino Icons font for iOS-style icons.
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Recommended lints for Flutter apps and packages.
+  flutter_lints: ^3.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
