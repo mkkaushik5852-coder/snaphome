@@ -1,0 +1,81 @@
+name: Build Debug APK
+
+# Builds an installable Android debug APK and uploads it as a downloadable
+# artifact. Runs on every push to main, and can also be started by hand from
+# the Actions tab ("Run workflow").
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Android builds run on the JVM, so a JDK must be available.
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build debug APK
+        run: flutter build apk --debug
+
+      - name: Upload debug APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snaphome-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 14
+
+  # ---------------------------------------------------------------------------
+  # RELEASE AAB (App Bundle) STUB - intentionally disabled for now.
+  #
+  # A signed release App Bundle (.aab) is what you upload to the Google Play
+  # Store. Building one requires a signing key (a keystore) plus signing config,
+  # which we are deferring until you are ready to publish. Do NOT commit a
+  # keystore or passwords to the repo; those belong in encrypted GitHub Secrets.
+  #
+  # When you are ready, add a job like the one below (remove the leading "#"
+  # from each line and wire up your signing config in android/app/build.gradle):
+  #
+  # build-aab:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out the repository
+  #       uses: actions/checkout@v4
+  #     - name: Set up Java
+  #       uses: actions/setup-java@v4
+  #       with:
+  #         distribution: temurin
+  #         java-version: '17'
+  #     - name: Set up Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: stable
+  #     - name: Install dependencies
+  #       run: flutter pub get
+  #     - name: Build release App Bundle
+  #       run: flutter build appbundle --release
+  #     - name: Upload release AAB artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: snaphome-release-aab
+  #         path: build/app/outputs/bundle/release/app-release.aab
+  #         retention-days: 14
+  # ---------------------------------------------------------------------------

@@ -1,0 +1,60 @@
+name: Deploy Web Preview
+
+# Builds the Flutter web app and publishes it to GitHub Pages.
+# Runs automatically on every push to main, and can also be started by hand
+# from the Actions tab ("Run workflow").
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+# Permissions needed to publish to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one Pages deployment at a time. Do not cancel a run that is
+# already deploying, so a finished deploy is never interrupted.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      # The site is served from the /snaphome/ subpath on GitHub Pages, so the
+      # web build must be told about that base href or assets will 404.
+      - name: Build web
+        run: flutter build web --release --base-href /snaphome/
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
